@@ -1,0 +1,25 @@
+{
+  "name": "next-framework",
+  "version": "1.0.0",
+  "description": "Docker based Next.js framework",
+  "main": "index.js",
+  "scripts": {
+    "lint": "node_modules/.bin/standard",
+    "dev": "node_modules/.bin/forever --minUptime 1000 --spinSleepTime 1000 node_modules/.bin/next -p 80",
+    "build": "next build",
+    "export": "next export",
+    "start": "next start"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "standard": "11.0.1",
+    "forever": "0.15.3",
+    "next": "6.1.1",
+    "react": "16.4.1",
+    "react-dom": "16.4.1",
+    "normalize.css": "8.0.0",
+    "node-sass": "4.9.2",
+    "@zeit/next-sass": "^0.2.0"
+  }
+}
