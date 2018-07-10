@@ -4,6 +4,8 @@ services:
     image: node:8.11.1
     ports:
       - '80:80'
+      - '8888:8888'
+      - '8889:8889'
     working_dir: /app/src
     volumes:
       - .:/app

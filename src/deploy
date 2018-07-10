@@ -1,0 +1,3 @@
+#!/bin/bash
+
+rsync -rtv --delete ./out/ root@139.59.164.161:/var/www/html/
