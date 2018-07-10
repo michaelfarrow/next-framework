@@ -1,19 +1,27 @@
 import Link from 'next/link'
 
-const Index = () => (
-  <div>
-    <Link href='/about'>
-    <button>
-      Go to About Page
-    </button>
+const PostLink = (props) => (
+  <li>
+    <Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>
+    <a>
+      {props.title}
+    </a>
     </Link>
-    <p>
-      Hello Next.js
-    </p>
-  </div>
+  </li>
 )
 
-export default Index
+export default () => (
+  <div>
+    <Link href='/about'> About
+    </Link>
+    <h1>My Blog</h1>
+    <ul>
+      <PostLink id='hello-nextjs' title='Hello Next.js' />
+      <PostLink id='learn-nextjs' title='Learn Next.js is awesome' />
+      <PostLink id='deploy-nextjs' title='Deploy apps with Zeit' />
+    </ul>
+  </div>
+)
 
 // import React from 'react'
 // import PropTypes from 'prop-types'
