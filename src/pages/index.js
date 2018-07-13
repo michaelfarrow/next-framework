@@ -1,5 +1,11 @@
 import Link from 'next/link'
 
+import { query } from '../lib/prismic'
+query(api => api.getSingle('page'))
+  .then(res => {
+    console.log(res)
+  })
+
 const PostLink = (props) => (
   <li>
     <Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>
@@ -12,8 +18,6 @@ const PostLink = (props) => (
 
 export default () => (
   <div>
-    <Link href='/about'> About
-    </Link>
     <h1>My Blog</h1>
     <ul>
       <PostLink id='hello-nextjs' title='Hello Next.js' />
