@@ -1,0 +1,36 @@
+{
+  "items": [
+    {
+      "id": "W0pMWh8AAG7gNZjb",
+      "uid": "ballantines",
+      "type": "project",
+      "href": "http://mikefarrow.cdn.prismic.io/api/v2/documents/search?ref=W0vd5B8AAAEZPH89&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22W0pMWh8AAG7gNZjb%22%29+%5D%5D",
+      "tags": [],
+      "first_publication_date": "2018-07-14T19:19:01+0000",
+      "last_publication_date": "2018-07-15T23:51:00+0000",
+      "slugs": [
+        "ballantines"
+      ],
+      "linked_documents": [
+        {
+          "id": "W0pMWh8AAG7gNZjb",
+          "tags": [],
+          "type": "project",
+          "slug": "ballantines",
+          "lang": "en-us"
+        }
+      ],
+      "lang": "en-us",
+      "alternate_languages": [],
+      "data": {
+        "title": [
+          {
+            "type": "heading1",
+            "text": "Ballantine's",
+            "spans": []
+          }
+        ]
+      }
+    }
+  ]
+}

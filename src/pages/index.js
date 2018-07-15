@@ -1,11 +1,5 @@
 import Link from 'next/link'
 
-import { query } from '../lib/prismic'
-query(api => api.getSingle('page'))
-  .then(res => {
-    console.log(res)
-  })
-
 const PostLink = (props) => (
   <li>
     <Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>

@@ -9,7 +9,11 @@ npm install --no-optional
 step "link dev tools"
 ln -s "/app/tools/reload" /usr/bin/reload
 ln -s "/app/tools/reload" /usr/bin/restart
+ln -s "/app/tools/dashboard" /usr/bin/dashboard
+ln -s "/app/tools/dashboard" /usr/bin/dash
+ln -s "/app/tools/dashboard" /usr/bin/webpack
 
 step "run"
 export FORCE_COLOR=1
+npm run fetch
 logger next npm run dev

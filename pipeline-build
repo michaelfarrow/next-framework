@@ -8,4 +8,8 @@ npm install --no-optional
 
 step "run"
 export FORCE_COLOR=1
-logger analyze npm run analyze
+npm run fetch
+npm run build
+npm run export
+
+exit

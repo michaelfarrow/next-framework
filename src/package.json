@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "lint": "node_modules/.bin/standard",
-    "dev": "node_modules/.bin/forever --minUptime 1000 --spinSleepTime 1000 node_modules/.bin/next -p 80",
+    "dev": "node_modules/.bin/forever --minUptime 1000 --spinSleepTime 1000 server.js",
     "build": "next build",
     "export": "next export",
     "start": "next build && next start -p 80",
-    "analyze": "cross-env ANALYZE=1 next build"
+    "analyze": "cross-env ANALYZE=1 next build",
+    "fetch": "node fetch-data"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,9 @@
     "standard": "11.0.1",
     "forever": "0.15.3",
     "next": "6.1.1",
+    "express": "4.16.3",
+    "path-to-regexp": "2.2.1",
+    "webpack-dashboard": "2.0.0",
     "react": "16.4.1",
     "next-redux-wrapper": "2.0.0-beta.6",
     "react-dom": "16.4.1",
