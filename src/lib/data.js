@@ -3,14 +3,34 @@ const { query, Prismic } = require('./prismic')
 const path = require('path')
 const _ = require('lodash')
 const { types } = require('./types')
+const crypto = require('crypto')
+const download = require('download')
 
 const ROOT_DIR = './pages/prismic'
+const ROOT_DIR_IMG = './static/img/remote'
 const DEFAULT_PER_PAGE = 100
+const IMAGE_REGEX = /^https?:\/\/.*?\.(jpg|jpeg|svg|gif|png)$/
+
+const promiseSerial = funcs => {
+  return funcs.reduce(
+    (promise, func) => {
+      return promise.then(result => func().then(Array.prototype.concat.bind(result)))
+    },
+    Promise.resolve([])
+  )
+}
+
+const hashUrl = url => {
+  const ext = path.extname(url)
+  const generator = crypto.createHash('sha1')
+  generator.update(url)
+  return `${generator.digest('hex')}${ext}`
+}
 
 const getPaginatedItemsPage = (type, page) => {
   const options = {page: page}
   options.pageSize = type.indexPerPage || DEFAULT_PER_PAGE
-  if (type.indexFields) options.fetch = type.indexFields
+  // if (type.indexFields) options.fetch = type.indexFields
   if (type.indexOrder) options.orderings = `[${type.indexOrder}]`
   return query(api => api.query(
     Prismic.Predicates.at('document.type', type.type),
@@ -41,7 +61,12 @@ const savePaginatedData = type => items => {
               next: i < paginated.length - 1 ? i + 2 : null,
               prev: i > 0 ? i : null
             },
-            items: items
+            items: items.map(item => {
+              if (!type.indexFields) return item
+              return Object.assign({}, item, {
+                data: _.pick(item.data, type.indexFields)
+              })
+            })
           },
           {spaces: 2}
         )
@@ -56,14 +81,68 @@ const savePaginatedData = type => items => {
   }))
 }
 
+const findImages = (o, images) => {
+  if (_.isObject(o)) {
+    Object.keys(o).forEach(key => {
+      if (_.isString(o[key]) && o[key].match(IMAGE_REGEX)) {
+        const hashedUrl = hashUrl(o[key])
+        images.push({
+          url: o[key],
+          hash: hashedUrl
+        })
+        o[key] = hashedUrl
+      } else {
+        findImages(o[key], images)
+      }
+    })
+  } else if (_.isArray(o)) {
+    _.forEach(o, item => findImages(item, images))
+  }
+  return images
+}
+
+const parseImages = items => {
+  return new Promise((resolve, reject) => {
+    const images = items.map(item => findImages(item, []))
+    resolve({
+      items: items,
+      images: _(images)
+        .flatten(images)
+        .uniqBy('hash')
+        .value()
+    })
+  })
+}
+
+const downloadImages = images => {
+  return promiseSerial(images.map(image => () => {
+    return download(image.url, ROOT_DIR_IMG, {filename: image.hash})
+  }))
+}
+
 module.exports.types = types
 
 module.exports.fetch = () => {
+  let imagesDownloaded = []
+
   return Promise.all([
-    fs.emptyDir(ROOT_DIR)
-  ].concat(
-    types.map(t => getPaginatedItems(t).then(savePaginatedData(t))),
-  // types.map(t => getData(t.type).then(saveData(t.type, t.key))),
-  // types.map(t => getIndexData(t).then(saveIndexData(t.type)))
-  ))
+    fs.emptyDir(ROOT_DIR),
+    fs.emptyDir(ROOT_DIR_IMG),
+    fs.ensureDir(ROOT_DIR_IMG)
+  ])
+    .then(() => {
+      return promiseSerial(types.map(t => () => {
+        return getPaginatedItems(t)
+          .then(parseImages)
+          .then(({items, images}) => {
+            const toDownload = images.filter(image => {
+              return !imagesDownloaded.includes(image.hash)
+            })
+            imagesDownloaded = imagesDownloaded.concat(toDownload.map(image => image.hash))
+            return downloadImages(toDownload)
+              .then(() => items)
+          })
+          .then(savePaginatedData(t))
+      }))
+    })
 }

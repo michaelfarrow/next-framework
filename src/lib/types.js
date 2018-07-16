@@ -8,7 +8,7 @@ const types = [
     route: '/work/:uid',
     index: '/work',
     indexFields: [
-      'project.title'
+      'title'
     ],
     indexOrder: 'my.project.title',
     indexPerPage: 2

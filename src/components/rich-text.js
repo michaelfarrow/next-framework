@@ -2,24 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { RichText as PrismicRichText } from 'prismic-reactjs'
 import Link from 'components/link'
+import Image from 'components/image'
 
 const htmlSerializer = (type, element, content, children, key) => {
-  if (type === 'hyperlink') {
-    const link = element.data
-    switch (link.link_type) {
-      case 'Web':
-        return (
-          <a key={key} href={link.url} target='_blank'>
+  switch (type) {
+    case 'hyperlink':
+      const link = element.data
+      switch (link.link_type) {
+        case 'Web':
+          return (
+            <a key={key} href={link.url} target='_blank'>
+              {children}
+            </a>
+          )
+        case 'Document':
+          return (
+            <Link key={key} doc={link}>
             {children}
-          </a>
-        )
-      case 'Document':
-        return (
-          <Link key={key} doc={link}>
-          {children}
-          </Link>
-        )
-    }
+            </Link>
+          )
+      }
+    case 'image':
+      return (
+        <Image key={key} src={element.url} alt={element.alt} />
+      )
+      break
   }
   return null
 }

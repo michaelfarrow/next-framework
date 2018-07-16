@@ -2,3 +2,4 @@
 node_modules
 .next
 /src/out
+/src/static/img/remote

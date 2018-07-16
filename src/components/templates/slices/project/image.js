@@ -1,5 +1,6 @@
 import React from 'react'
 import RichText from 'components/rich-text'
+import Image from 'components/image'
 
 export default class ImageSlice extends React.Component {
 
@@ -7,7 +8,7 @@ export default class ImageSlice extends React.Component {
     const { image, caption } = this.props
     return (
       <div>
-        {image && <img src={image.url} />}
+        {image && <Image src={image.url} />}
         {caption && (
          <div>
            <RichText value={caption} />
