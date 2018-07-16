@@ -18,7 +18,7 @@ class ProjectPreview extends React.Component {
 
 }
 
-export default class ProjectTemplate extends React.Component {
+export default class ProjectIndexTemplate extends React.Component {
 
   render () {
     const { items } = this.props
@@ -30,6 +30,7 @@ export default class ProjectTemplate extends React.Component {
              <ProjectPreview key={i} {...item} />
            ))}
         </ul>
+        {this.props.renderPagination()}
       </div>
     )
   }

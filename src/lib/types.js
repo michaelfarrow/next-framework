@@ -1,4 +1,5 @@
 const pathToRegexp = require('path-to-regexp')
+const { mapKeys } = require('lodash')
 
 const types = [
   {
@@ -9,18 +10,22 @@ const types = [
     indexFields: [
       'project.title'
     ],
-    indexOrder: 'my.project.title'
+    indexOrder: 'my.project.title',
+    indexPerPage: 2
   },
   {
     type: 'page',
     key: 'uid',
-    route: '/:uid'
+    route: '/:uid',
+    index: '/pages'
   }
 ]
 
-module.exports = types.map(t => {
+module.exports.types = types.map(t => {
   return Object.assign({}, t, {
     routeRegex: pathToRegexp(t.route),
-    toPath: pathToRegexp.compile(t.route)
+    routeToPath: pathToRegexp.compile(t.route)
   })
 })
+
+module.exports.typesByKey = mapKeys(module.exports.types, t => t.type)

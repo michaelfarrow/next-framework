@@ -1,8 +1,13 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { default as NextLink } from 'next/link'
 import { hrefResolver, asResolver } from 'lib/link'
 
 export default class Link extends React.Component {
+
+  static propTypes = {
+    doc: PropTypes.object.isRequired
+  }
 
   render () {
     return (

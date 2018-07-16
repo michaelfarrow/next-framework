@@ -1,14 +1,11 @@
-const types = require('./types')
-const { mapKeys } = require('lodash')
+const { typesByKey } = require('./types')
 
-const TYPES = mapKeys(types, t => t.type)
-
-const getType = doc => TYPES[doc.type] || null
+const getType = doc => typesByKey[doc.type] || null
 
 module.exports.hrefResolver = doc => {
   const type = getType(doc)
   if (type) {
-    return `/prismic/${type.type}/${doc[type.key]}`
+    return `/prismic/${type.type}/item/${doc[type.key]}`
   }
   return '#'
 }
@@ -18,7 +15,7 @@ module.exports.asResolver = doc => {
   if (type) {
     const pathArgs = {}
     pathArgs[type.key] = doc[type.key]
-    return type.toPath(pathArgs)
+    return type.routeToPath(pathArgs)
   }
   return '#'
 }

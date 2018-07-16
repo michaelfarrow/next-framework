@@ -21,16 +21,17 @@ export default () => {
 `)
 
 const render = (source, resourcePath) => new Promise((resolve, reject) => {
-  const matched = resourcePath.match(/pages\/prismic\/(.*?)\/(.*?)\.json/)
+  const matched = resourcePath.match(/pages\/prismic\/(.*?)\/(item|page)\/(.*?)\.json$/)
   const type = matched[1]
-  const slug = matched[2]
+  const template = matched[2]
+  const slug = matched[3]
   let json = null
   try {
     json = JSON.parse(source)
   } catch(err) {
     return reject(err)
   }
-  resolve(slug === 'index' ? typeIndexTemplate(json, type) : typeTemplate(json, type))
+  resolve(template === 'page' ? typeIndexTemplate(json, type) : typeTemplate(json, type))
 })
 
 module.exports = function (source, map) {

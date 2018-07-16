@@ -2,7 +2,7 @@ const express = require('express')
 const next = require('next')
 const { parse } = require('url')
 const fs = require('fs-extra')
-const types = require('./lib/types')
+const { types } = require('./lib/types')
 const pathToRegexp = require('path-to-regexp')
 
 const dev = process.env.NODE_ENV !== 'production'
@@ -15,14 +15,19 @@ const matchRoute = path => {
   let matched = null
   types.forEach(t => {
     if (matched === null) {
-      if (t.index === path) {
-        matched = Object.assign({}, t, {slug: 'index'})
-      } else {
-        const re = pathToRegexp(t.route)
-        const match = re.exec(path)
-        if (match) {
-          matched = Object.assign({}, t, {slug: match[1]})
-        }
+      const indexWithPageRoute = t.index && `${t.index}/page/:page?` || null
+      const indexRoute = t.index && `${t.index}` || null
+
+      const indexWithPageRegex = indexWithPageRoute && pathToRegexp(indexWithPageRoute)
+      const indexRegex = indexRoute && pathToRegexp(indexRoute)
+
+      let match = null
+      if (indexWithPageRegex && (match = indexWithPageRegex.exec(path))) {
+        matched = Object.assign({}, t, {path: `page/${match[1]}`})
+      } else if (indexRegex && (match = indexRegex.exec(path))) {
+        matched = Object.assign({}, t, {path: `page/1`})
+      } else if (match = t.routeRegex.exec(path)) {
+        matched = Object.assign({}, t, {path: `item/${match[1]}`})
       }
     }
   })
@@ -40,13 +45,8 @@ app.prepare()
       const route = matchRoute(pathName)
       if (!route) return handle(req, res)
 
-      const realUri = `/prismic/${route.type}${route.slug !== 'index' && `/${route.slug}` || ''}`
-      const jsonFilePath = `${PAGES_DIR}/prismic/${route.type}/${route.slug}.json`
-
-      // console.log('----')
-      // console.log(pathName)
-      // console.log(realUri)
-      // console.log(jsonFilePath)
+      const realUri = `/prismic/${route.type}/${route.path}`
+      const jsonFilePath = `${PAGES_DIR}${realUri}.json`
 
       fs.pathExists(jsonFilePath)
         .then(exists => {
