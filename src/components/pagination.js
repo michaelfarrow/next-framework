@@ -1,20 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { typesByKey } from 'lib/types'
+import { asResolverIndex, hrefResolverIndex } from 'lib/link'
 import Link from 'next/link'
-
-const asResolver = (type, page) => {
-  const path = [type.index]
-  if (page !== 1) {
-    path.push('page')
-    path.push(page)
-  }
-  return path.join('/')
-}
-
-const hrefResolver = (type, page) => {
-  return ['/prismic', type.type, 'page', page].join('/')
-}
 
 export default class Pagination extends React.Component {
 
@@ -29,21 +17,26 @@ export default class Pagination extends React.Component {
 
   render () {
     const { type, current, first, last, next, prev } = this.props
+    const { nextLabel, prevLabel } = this.props
     const _type = typesByKey[type]
     if (!_type || !_type.index) return null
     return (
       <div className='pagination'>
         <div className='pagination--prev'>
           {prev && (
-           <Link as={asResolver(_type, prev)} href={hrefResolver(_type, prev)}>
-           <a>Previous</a>
+           <Link prefetch as={asResolverIndex(_type, prev)} href={hrefResolverIndex(_type, prev)}>
+           <a>
+             {prevLabel || 'Previous'}
+           </a>
            </Link>
            )}
         </div>
         <div className='pagination--next'>
           {next && (
-           <Link as={asResolver(_type, next)} href={hrefResolver(_type, next)}>
-           <a>Next</a>
+           <Link prefetch as={asResolverIndex(_type, next)} href={hrefResolverIndex(_type, next)}>
+           <a>
+             {nextLabel || 'Next'}
+           </a>
            </Link>
            )}
         </div>

@@ -16,8 +16,7 @@ const types = [
   {
     type: 'page',
     key: 'uid',
-    route: '/:uid',
-    index: '/pages'
+    route: '/:uid'
   }
 ]
 

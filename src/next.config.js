@@ -2,11 +2,11 @@ const path = require('path')
 const withSass = require('@zeit/next-sass')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const DashboardPlugin = require('webpack-dashboard/plugin')
-const types = require('./lib/types')
+const { types } = require('./lib/types')
 const klaw = require('klaw')
 const _ = require('lodash')
 const fs = require('fs-extra')
-const { asResolver, hrefResolver } = require('./lib/link')
+const { asResolver, hrefResolver, asResolverIndex, hrefResolverIndex } = require('./lib/link')
 
 const { ANALYZE } = process.env
 
@@ -29,13 +29,20 @@ const getPrismicFiles = () => {
 const processPrismicFiles = files => {
   return Promise.all(files.map(file => {
     return fs.readJson(file)
-      .then(json => ({
-        path: file,
-        data: json
-      }))
-  })).then(files => {
-    return _.groupBy(files, 'data.type')
-  })
+      .then(json => {
+        const match = file.match(/\/([^\/]+)\/(item|page)\/([^\/]+)\.json$/)
+        return {
+          type: match[1],
+          as: match[2],
+          slug: match[3],
+          path: file,
+          data: json
+        }
+      })
+  }))
+// .then(files => {
+//   return _.groupBy(files, 'data.type')
+// })
 }
 
 const getPrismicMap = () => {
@@ -44,22 +51,23 @@ const getPrismicMap = () => {
     .then(files => {
       const typesReversed = types.slice(0)
       typesReversed.reverse()
-      const mapped = _(typesReversed)
-        .map(t => {
-          const items = files[t.type]
-          if (!items) return {}
-          const indexItem = {}
-          if (t.index) {
-            indexItem[t.index] = { page: `/prismic/${t.type}` }
-          }
-          const dynamicItems = _(items)
-            .mapKeys(item => asResolver(item.data))
-            .mapValues(item => ({page: hrefResolver(item.data)}))
+      const mapped = typesReversed.map(t => {
+        const typeFiles = _.filter(files, file => file.type === t.type)
+        const items = _.filter(typeFiles, file => file.as === 'item')
+        const pages = _.filter(typeFiles, file => file.as === 'page')
+        const mappedItems = _(items)
+          .mapKeys(item => asResolver(item.data))
+          .mapValues(item => hrefResolver(item.data))
+          .value()
+        const mappedPages = t.index
+          ? _(pages)
+            .mapKeys(item => asResolverIndex(t, parseInt(item.slug)))
+            .mapValues(item => hrefResolverIndex(t, parseInt(item.slug)))
             .value()
-          return Object.assign({}, indexItem, dynamicItems)
-        })
-        .value()
-      return Object.assign.apply(null, [{}].concat(mapped))
+          : {}
+        return {...mappedPages, ...mappedItems}
+      })
+      return Object.assign.apply(null, [].concat(mapped))
     })
 }
 
@@ -95,7 +103,7 @@ const getPageMap = () => {
     .then(files => {
       return _(files)
         .mapKeys(file => file.uri)
-        .mapValues(file => ({page: file.uri}))
+        .mapValues(file => file.uri)
         .value()
     })
 }
@@ -134,9 +142,9 @@ module.exports = withSass({
       getPrismicMap()
     ])
       .then((res) => {
-        const mapped = Object.assign.apply(
-          null,
-          res
+        const mapped = _.mapValues(
+          Object.assign.apply(null, res),
+          path => ({page: path})
         )
         return mapped
       })

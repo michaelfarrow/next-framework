@@ -19,3 +19,16 @@ module.exports.asResolver = doc => {
   }
   return '#'
 }
+
+module.exports.asResolverIndex = (type, page) => {
+  const path = [type.index]
+  if (page !== 1) {
+    path.push('page')
+    path.push(page)
+  }
+  return path.join('/')
+}
+
+module.exports.hrefResolverIndex = (type, page) => {
+  return ['/prismic', type.type, 'page', page].join('/')
+}
