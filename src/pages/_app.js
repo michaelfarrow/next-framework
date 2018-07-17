@@ -3,8 +3,17 @@ import '../css/styles.scss'
 import React from 'react'
 import { Provider } from 'react-redux'
 import App, { Container } from 'next/app'
+import Head from 'next/head'
 import withRedux from 'next-redux-wrapper'
 import makeStore from 'lib/store'
+import { PageTransition } from 'next-page-transitions'
+import Header from 'components/header'
+import Title from 'components/title'
+
+const TIMEOUT = {
+  enter: 1000,
+  exit: 400
+}
 
 class MyApp extends App {
 
@@ -19,12 +28,23 @@ class MyApp extends App {
   }
 
   render () {
-    const {Component, pageProps, store} = this.props
+    const { Component, pageProps, store } = this.props
+    const { router } = this.props
     return (
       <Container>
-        <Provider store={store}>
-          <Component {...pageProps} />
-        </Provider>
+        <Head>
+          {Title()}
+        </Head>
+        {/* <Provider store={store}> */}
+        <div>
+          <Header router={router} />
+          <div>
+            <PageTransition timeout={TIMEOUT} classNames='page-transition' monkeyPatchScrolling={true}>
+              <Component {...pageProps} />
+            </PageTransition>
+          </div>
+        </div>
+        {/* </Provider> */}
       </Container>
     )
   }

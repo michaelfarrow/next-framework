@@ -1,4 +1,7 @@
 
+$animationEnter: 1s;
+$animationExit: 400ms;
+
 html,
 body {
   margin: 0;
@@ -28,5 +31,38 @@ body {
     // img, .img {
       opacity: 1;
     // }
+  }
+}
+
+.page-transition-enter {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity $animationEnter, transform $animationEnter;
+}
+
+.page-transition-exit {
+  opacity: 1;
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transition: opacity $animationExit;
+}
+
+.nav--item {
+  &.nav--item-current {
+    pointer-events: none;
+  }
+
+  &.nav--item-current,
+  &.nav--item-current-child {
+    a {
+      color: red;
+    }
   }
 }

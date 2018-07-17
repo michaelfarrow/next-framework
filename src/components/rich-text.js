@@ -52,3 +52,7 @@ export default class RichText extends React.Component {
   }
 
 }
+
+export function asText (value) {
+  return PrismicRichText.asText(value)
+}

@@ -1,4 +1,6 @@
 import React from 'react'
+import Head from 'next/head'
+import Title from 'components/title'
 import RichText from 'components/rich-text'
 import Link from 'components/link'
 import Image from 'components/image'
@@ -27,6 +29,9 @@ export default class ProjectIndexTemplate extends React.Component {
     const { items } = this.props
     return (
       <div>
+        <Head>
+          {Title('Work')}
+        </Head>
         <h2>Project Index</h2>
         <ul>
           {items.map((item, i) => (

@@ -1,5 +1,7 @@
 import React from 'react'
-import RichText from 'components/rich-text'
+import Head from 'next/head'
+import Title from 'components/title'
+import RichText, { asText } from 'components/rich-text'
 import Slices from 'components/slices'
 import slices from './slices/project'
 
@@ -10,6 +12,9 @@ export default class ProjectTemplate extends React.Component {
     const { title, body } = data
     return (
       <div>
+        <Head>
+          {Title(['Work', title])}
+        </Head>
         <div>
           {title && <RichText value={title} />}
         </div>

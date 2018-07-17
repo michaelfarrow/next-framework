@@ -1,4 +1,6 @@
 import React from 'react'
+import Head from 'next/head'
+import Title from 'components/title'
 import RichText from 'components/rich-text'
 import Embed from 'components/embed'
 
@@ -10,6 +12,9 @@ export default class PageTemplate extends React.Component {
     const { title, text, embed } = data
     return (
       <div>
+        <Head>
+          {Title(title)}
+        </Head>
         <div className='page--header'>
           {title && <RichText value={title} />}
         </div>
