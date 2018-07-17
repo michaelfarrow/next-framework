@@ -1,6 +1,7 @@
 const Prismic = require('prismic-javascript')
+const { repo } = require('../config')
 
-const API_ENDPOINT = 'http://mikefarrow.prismic.io/api/v2'
+const API_ENDPOINT = `http://${repo}.prismic.io/api/v2`
 
 const api = () => Prismic.api(API_ENDPOINT)
 
