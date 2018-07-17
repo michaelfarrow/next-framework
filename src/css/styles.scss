@@ -14,3 +14,19 @@ body {
   width: 100%;
   height: 100%;
 }
+
+.imageloader {
+  // img, .img {
+    opacity: 0;
+    transition: {
+      property: opacity;
+      duration: 0.5s;
+    }
+  // }
+
+  &.imageloader-loaded {
+    // img, .img {
+      opacity: 1;
+    // }
+  }
+}
