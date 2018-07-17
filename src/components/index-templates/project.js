@@ -1,15 +1,18 @@
 import React from 'react'
 import RichText from 'components/rich-text'
 import Link from 'components/link'
+import Image from 'components/image'
 
 class ProjectPreview extends React.Component {
 
   render () {
     const { data = {} } = this.props
-    const { title } = data
+    const { title, header_image = {} } = data
+    const { thumb = {} } = header_image
     return (
       <li>
         <Link doc={this.props}>
+        {Object.keys(thumb).length && <Image {...thumb} /> || null}
         {title && <RichText asText={true} value={title} />}
         </Link>
       </li>

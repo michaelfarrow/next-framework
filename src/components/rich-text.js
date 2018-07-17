@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { RichText as PrismicRichText } from 'prismic-reactjs'
 import Link from 'components/link'
 import Image from 'components/image'
+import Embed from 'components/embed'
 
 const htmlSerializer = (type, element, content, children, key) => {
   switch (type) {
@@ -23,10 +24,12 @@ const htmlSerializer = (type, element, content, children, key) => {
           )
       }
     case 'image':
+      const { url: imageUrl, ...imageProps } = element
       return (
-        <Image key={key} src={element.url} alt={element.alt} />
+        <Image key={key} src={imageUrl} {...imageProps} />
       )
-      break
+    case 'embed':
+      return <Embed key={key} {...element.oembed} />
   }
   return null
 }

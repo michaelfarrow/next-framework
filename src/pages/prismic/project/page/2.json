@@ -11,7 +11,7 @@
       "id": "W0zVcR8AAP9VQI7U",
       "uid": "invisalign",
       "type": "project",
-      "href": "http://mikefarrow.cdn.prismic.io/api/v2/documents/search?ref=W00fyB8AADVqQdZj&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22W0zVcR8AAP9VQI7U%22%29+%5D%5D",
+      "href": "http://mikefarrow.cdn.prismic.io/api/v2/documents/search?ref=W00_JB8AAP1yQmBc&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22W0zVcR8AAP9VQI7U%22%29+%5D%5D",
       "tags": [],
       "first_publication_date": "2018-07-16T17:27:16+0000",
       "last_publication_date": "2018-07-16T17:27:16+0000",
@@ -28,17 +28,20 @@
             "text": "Invisalign",
             "spans": []
           }
-        ]
+        ],
+        "header_image": {
+          "thumb": {}
+        }
       }
     },
     {
       "id": "W0zVOR8AAG1WQI3W",
       "uid": "mycelia",
       "type": "project",
-      "href": "http://mikefarrow.cdn.prismic.io/api/v2/documents/search?ref=W00fyB8AADVqQdZj&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22W0zVOR8AAG1WQI3W%22%29+%5D%5D",
+      "href": "http://mikefarrow.cdn.prismic.io/api/v2/documents/search?ref=W00_JB8AAP1yQmBc&q=%5B%5B%3Ad+%3D+at%28document.id%2C+%22W0zVOR8AAG1WQI3W%22%29+%5D%5D",
       "tags": [],
       "first_publication_date": "2018-07-16T17:26:43+0000",
-      "last_publication_date": "2018-07-16T22:44:24+0000",
+      "last_publication_date": "2018-07-16T23:30:57+0000",
       "slugs": [
         "mycelia---life-of-a-song"
       ],
@@ -52,7 +55,25 @@
             "text": "Mycelia - Life of a Song",
             "spans": []
           }
-        ]
+        ],
+        "header_image": {
+          "dimensions": {
+            "width": 1920,
+            "height": 800
+          },
+          "alt": null,
+          "copyright": null,
+          "url": "df8f72ad654426e9aa4acb250425e42116a0e3da.jpg",
+          "thumb": {
+            "dimensions": {
+              "width": 500,
+              "height": 500
+            },
+            "alt": null,
+            "copyright": null,
+            "url": "5be2935b69c870267239f3a1334986c4e15a5671.jpg"
+          }
+        }
       }
     }
   ]

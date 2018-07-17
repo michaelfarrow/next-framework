@@ -23,7 +23,6 @@ export default () => (
 
 // import React from 'react'
 // import PropTypes from 'prop-types'
-// import '../css/styles.scss'
 // import { connect } from 'react-redux'
 // import { fetchUsers } from '../lib/actions/user'
 // import Header from '../components/header'

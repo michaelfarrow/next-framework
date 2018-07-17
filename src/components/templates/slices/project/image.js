@@ -8,7 +8,7 @@ export default class ImageSlice extends React.Component {
     const { image, caption } = this.props
     return (
       <div>
-        {image && <Image src={image.url} />}
+        {image && <Image {...image} />}
         {caption && (
          <div>
            <RichText value={caption} />

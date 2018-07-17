@@ -1,5 +1,6 @@
 import React from 'react'
 import RichText from 'components/rich-text'
+import Embed from 'components/embed'
 
 export default class PageTemplate extends React.Component {
 
@@ -12,6 +13,11 @@ export default class PageTemplate extends React.Component {
         <div className='page--header'>
           {title && <RichText value={title} />}
         </div>
+        {embed && embed.html && (
+         <div>
+           <Embed {...embed} />
+         </div>
+         )}
         <div className='page--body'>
           {text && <RichText value={text} />}
         </div>
