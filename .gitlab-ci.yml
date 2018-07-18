@@ -2,6 +2,7 @@ image: node:8.11.1
 
 test:
   script:
+    - cd src
     - npm install --no-optional
     - npm run fetch
     - npm run build
