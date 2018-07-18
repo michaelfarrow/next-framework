@@ -2,3 +2,4 @@ test:
   script:
     - ls -la /
     - hostname
+    - id
