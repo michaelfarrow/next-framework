@@ -1,6 +1,8 @@
+image: node:8.11.1
+
 test:
   script:
-    - ls -la /
-    - hostname
-    - id
-    - ls /opt/werckit
+    - npm install --no-optional
+    - npm run fetch
+    - npm run build
+    - npm run export
