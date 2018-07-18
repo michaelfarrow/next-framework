@@ -16,17 +16,11 @@ export default class Image extends React.Component {
     const BackgroundImage = ({src, style = {}, ...props} = {}) => <span className='img' style={{backgroundImage: `url(${_src})`, display: 'block', position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundPosition: 'center', backgroundSize: 'cover'}} />
     const image = (
     <LazyLoad>
-      {hasDimesions
-         ? <ImageLoader src={_src}>
-             <BackgroundImage/>
-             <div/>
-             <div/>
-           </ImageLoader>
-         : <ImageLoader src={_src}>
-             <img {...props} />
-             <div/>
-             <div/>
-           </ImageLoader>}
+      <ImageLoader src={_src}>
+        {hasDimesions && <BackgroundImage/> || <img {...props} />}
+        <div/>
+        <div/>
+      </ImageLoader>
     </LazyLoad>
     )
 
