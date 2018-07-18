@@ -116,7 +116,11 @@ const parseImages = items => {
 
 const downloadImages = images => {
   return promiseSerial(images.map(image => () => {
-    return download(image.url, ROOT_DIR_IMG, {filename: image.hash})
+    return fs.pathExists(path.resolve(ROOT_DIR_IMG, image.hash))
+      .then(exists => {
+        console.log(`${exists ? 'Skipping' : 'Downloading'}: ${image.url}`)
+        if(!exists) return download(image.url, ROOT_DIR_IMG, {filename: image.hash})
+      })
   }))
 }
 
@@ -127,7 +131,7 @@ module.exports.fetch = () => {
 
   return Promise.all([
     fs.emptyDir(ROOT_DIR),
-    fs.emptyDir(ROOT_DIR_IMG),
+    // fs.emptyDir(ROOT_DIR_IMG),
     fs.ensureDir(ROOT_DIR_IMG)
   ])
     .then(() => {

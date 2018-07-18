@@ -3,12 +3,12 @@ image: node:8.11.1
 cache:
   key: ${CI_COMMIT_REF_SLUG}
   paths:
-  - src/node_modules/
+    - src/node_modules/
+    - src/static/img/remote/
 
 test:
   script:
     - cd src
-    - ls node_modules
     - npm install --no-optional
     - npm run fetch
     - npm run build
