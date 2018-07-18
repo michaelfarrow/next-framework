@@ -5,11 +5,12 @@ const _ = require('lodash')
 const { types } = require('./types')
 const crypto = require('crypto')
 const download = require('download')
+const klaw = require('klaw')
 
 const ROOT_DIR = './pages/prismic'
 const ROOT_DIR_IMG = './static/img/remote'
 const DEFAULT_PER_PAGE = 100
-const IMAGE_REGEX = /^https?:\/\/.*?\.(jpg|jpeg|svg|gif|png)$/
+const IMAGE_REGEX = /.*?\.(jpg|jpeg|svg|gif|png)$/
 
 const promiseSerial = funcs => {
   return funcs.reduce(
@@ -124,6 +125,33 @@ const downloadImages = images => {
   }))
 }
 
+const getImages = () => {
+  return new Promise((resolve, reject) => {
+    const items = []
+    klaw(ROOT_DIR_IMG)
+      .on('error', reject)
+      .on('data', item => {
+        if(item.path.match(IMAGE_REGEX)) {
+          items.push(item.path)
+        }
+      })
+      .on('end', () => resolve(items))
+  })
+}
+
+const cleanupImages = images => {
+  return getImages()
+    .then(stored => {
+      const _images = images.map(image => path.resolve(ROOT_DIR_IMG, image))
+      return Promise.all(stored.map(image => {
+        if(!_images.includes(image)) {
+          console.log(`Deleting: ${image}`)
+          return fs.remove(image)
+        }
+      }))
+    })
+}
+
 module.exports.types = types
 
 module.exports.fetch = () => {
@@ -147,6 +175,8 @@ module.exports.fetch = () => {
               .then(() => items)
           })
           .then(savePaginatedData(t))
-      }))
+      })).then(() => {
+        return cleanupImages(imagesDownloaded)
+      })
     })
 }
