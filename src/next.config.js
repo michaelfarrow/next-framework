@@ -89,7 +89,7 @@ const getPageFiles = () => {
 
 const processPageFiles = files => {
   return files.map(file => {
-    const match = file.match(/^\/app\/src\/pages\/(.*?)\.js$/)
+    const match = file.match(/\/src\/pages\/(.*?)\.js$/)
     return {
       path: file,
       uri: `/${match[1].replace(/.*?(index)$/, '')}`
