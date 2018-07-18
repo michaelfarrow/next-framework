@@ -8,6 +8,7 @@ cache:
 test:
   script:
     - cd src
+    - ls node_modules
     - npm install --no-optional
     - npm run fetch
     - npm run build
