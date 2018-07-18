@@ -3,3 +3,4 @@ test:
     - ls -la /
     - hostname
     - id
+    - ls /root/.werckit
