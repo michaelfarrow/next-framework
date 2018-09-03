@@ -1,9 +1,11 @@
 const withSass = require('@zeit/next-sass')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const path = require('path')
 const { ANALYZE } = process.env
 
 module.exports = withSass({
-  webpack: function (config, { isServer }) {
+  pageExtensions: ['js', 'jsx', 'svg'],
+  webpack: function (config, { isServer, defaultLoaders }) {
     if (ANALYZE) {
       config.plugins.push(new BundleAnalyzerPlugin({
         analyzerHost: '0.0.0.0',
@@ -12,6 +14,16 @@ module.exports = withSass({
         openAnalyzer: true
       }))
     }
+    config.resolve.alias.components = path.resolve(__dirname, 'components')
+    config.resolveLoader.modules.push(path.resolve(__dirname, 'loaders'))
+    config.module.rules.push({
+      test: /\.svg/,
+      include: [ path.join(__dirname, 'pages/diagrams') ],
+      use: [
+        defaultLoaders.babel,
+        { loader: 'diagram-loader' }
+      ]
+    })
     return config
   },
   exportPathMap: function (defaultPathMap) {
