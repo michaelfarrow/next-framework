@@ -12,6 +12,9 @@ module.exports = withSass({
         openAnalyzer: true
       }))
     }
+    config.resolve.alias.components = path.resolve(__dirname, 'components')
+    config.resolve.alias.lib = path.resolve(__dirname, 'lib')
+    config.resolve.alias.css = path.resolve(__dirname, 'css')
     return config
   },
   exportPathMap: function (defaultPathMap) {
