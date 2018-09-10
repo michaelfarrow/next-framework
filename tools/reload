@@ -1,6 +1,4 @@
 #!/bin/bash
 
-rm -rf /app/.cache
-
-/app/node_modules/forever/bin/forever restartall
+/app/src/node_modules/.bin/forever restartall
 log
